@@ -49,7 +49,7 @@ class Paginator implements \Iterator
         if($prev < 1)
             $prev = 0;
 
-        $this->pages[] = $this->prev = new Page($base_url, $prev_label, $prev, $query_parameters);
+        $this->pages[] = $this->prev = new Page($base_url, $prev_label, $prev, $query_parameters, true, false);
 
         // in between pages
         for($i=$first_page;$i<=$last_page;$i++){
@@ -63,7 +63,7 @@ class Paginator implements \Iterator
         $next = $current_page + 1;
         if($next > $total_page)
             $next = 0;
-        $this->pages[] = $this->next = new Page($base_url, $next_label, $next, $query_parameters);
+        $this->pages[] = $this->next = new Page($base_url, $next_label, $next, $query_parameters, false, true);
 
         // last link
         $this->last = new Page($base_url, (string)$total_page, $total_page, $query_parameters);

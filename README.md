@@ -32,7 +32,9 @@ $pages = new Paginator(
 foreach($pages as $page){
     $page->label;
     $page->link;
-    $page->is_active;
+    $page->active;
+    $page->prev_btn;
+    $page->next_btn;
 }
 ```
 
