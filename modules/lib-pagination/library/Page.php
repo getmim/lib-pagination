@@ -2,7 +2,7 @@
 /**
  * Single page object
  * @package lib-pagination
- * @version 0.0.1
+ * @version 0.1.1
  */
 
 namespace LibPagination\Library;
@@ -34,8 +34,7 @@ class Page
             if($page_number > 1)
                 $query_parameters['page'] = $page_number;
             $used_url = '?' . http_build_query($query_parameters);
-            if($page_number === 1)
-                $used_url = $base_url . ($used_url==='?'?'':$used_url);
+            $used_url = $base_url . ($used_url === '?' ? '' : $used_url);
             $this->link = $used_url;
         }
     }

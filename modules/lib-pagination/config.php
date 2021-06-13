@@ -2,12 +2,12 @@
 /**
  * Module lib-pagination config
  * @package lib-pagination
- * @version 0.0.1
+ * @version 0.1.1
  */
 
 return [
     '__name' => 'lib-pagination',
-    '__version' => '0.1.0',
+    '__version' => '0.1.1',
     '__git' => 'git@github.com:getphun/lib-pagination.git',
     '__license' => 'MIT',
     '__author' => [
