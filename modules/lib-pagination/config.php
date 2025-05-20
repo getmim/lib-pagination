@@ -7,7 +7,7 @@
 
 return [
     '__name' => 'lib-pagination',
-    '__version' => '0.1.1',
+    '__version' => '0.2.0',
     '__git' => 'git@github.com:getphun/lib-pagination.git',
     '__license' => 'MIT',
     '__author' => [

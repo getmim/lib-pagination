@@ -11,6 +11,7 @@ class Paginator implements \Iterator
 {
     private $position = 0;
     private $pages = [];
+    protected $query = [];
 
     private $first;
     private $last;
@@ -26,85 +27,115 @@ class Paginator implements \Iterator
         array $query_parameters = [],
         string $prev_label = '&#171;',
         string $next_label = '&#187;'
-    ){
-        if($items_per_page >= $total_items)
+    ) {
+        $this->query = $query_parameters;
+        if ($items_per_page >= $total_items) {
             return;
+        }
 
         $total_page = ceil($total_items / $items_per_page);
 
-        $first_page = $current_page - floor( $page_link_to_show / 2 );
-        if($first_page < 1)
+        $first_page = $current_page - floor($page_link_to_show / 2);
+        if ($first_page < 1) {
             $first_page = 1;
+        }
 
         $last_page = $first_page + ( $page_link_to_show - 1 );
-        if($last_page > $total_page)
+        if ($last_page > $total_page) {
             $last_page = $total_page;
+        }
 
         $first_page = $last_page - ( $page_link_to_show - 1 );
-        if($first_page < 1)
+        if ($first_page < 1) {
             $first_page = 1;
+        }
 
         // prev link
         $prev = $current_page - 1;
-        if($prev < 1)
+        if ($prev < 1) {
             $prev = 0;
+        }
 
-        $this->pages[] = $this->prev = new Page($base_url, $prev_label, $prev, $query_parameters, true, false);
+        $this->pages[] = $this->prev = new Page(
+            $base_url,
+            $prev_label,
+            $prev,
+            $query_parameters,
+            true,
+            false
+        );
 
         // in between pages
-        for($i=$first_page;$i<=$last_page;$i++){
+        for ($i=$first_page; $i<=$last_page; $i++) {
             $i_page = $i;
-            if($i == $current_page)
+            if ($i == $current_page) {
                 $i_page = 0;
-            $this->pages[] = new Page($base_url, (string)$i, $i_page, $query_parameters);
+            }
+            $this->pages[] = new Page($base_url, (string)$i, $i_page, $this->query);
         }
 
         // next link
         $next = $current_page + 1;
-        if($next > $total_page)
+        if ($next > $total_page) {
             $next = 0;
-        $this->pages[] = $this->next = new Page($base_url, $next_label, $next, $query_parameters, false, true);
+        }
+        $this->next = new Page($base_url, $next_label, $next, $this->query, false, true);
+        $this->pages[] = $this->next;
 
         // last link
-        $this->last = new Page($base_url, (string)$total_page, $total_page, $query_parameters);
+        $this->last = new Page($base_url, (string)$total_page, $total_page, $this->query);
 
         // fist link
-        $this->first = new Page($base_url, (string)'1', 1, $query_parameters);
+        $this->first = new Page($base_url, (string)'1', 1, $this->query);
     }
 
-    public function rewind() : void{
+    public function rewind() : void
+    {
         $this->position = 0;
     }
 
-    public function current() : mixed{
+    public function current() : mixed
+    {
         return $this->pages[$this->position];
     }
 
-    public function key() : mixed{
+    public function key() : mixed
+    {
         return $this->position;
     }
 
-    public function next(): void{
+    public function next(): void
+    {
         ++$this->position;
     }
 
-    public function valid() : bool{
+    public function valid() : bool
+    {
         return isset($this->pages[$this->position]);
     }
 
-    public function getFirst(): ?object{
+    public function getFirst(): ?object
+    {
         return $this->first;
     }
 
-    public function getNext(): ?object{
+    public function getNext(): ?object
+    {
         return $this->next;
     }
 
-    public function getLast(): ?object{
+    public function getLast(): ?object
+    {
         return $this->last;
     }
 
-    public function getPrev(): ?object{
+    public function getPrev(): ?object
+    {
         return $this->prev;
+    }
+
+    public function getQuery(): ?array
+    {
+        return $this->query;
     }
 }
